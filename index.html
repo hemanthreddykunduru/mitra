@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitra AI - Your Personal Offline AI Assistant</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ff006e;
+            --accent-green: #00ff88;
+            --shadow-primary: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --shadow-intense: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --border-radius: 20px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-gradient);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(75, 0, 130, 0.3) 0%, transparent 50%);
+            animation: backgroundFlow 20s ease-in-out infinite;
+        }
+
+        @keyframes backgroundFlow {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(12, 12, 12, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px var(--accent-cyan);
+            animation: logoGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px var(--accent-cyan)); }
+            50% { filter: drop-shadow(0 0 20px var(--accent-purple)); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            border-radius: 25px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .nav-links a:hover::before {
+            opacity: 1;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 5.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: heroGlow 2s ease-in-out infinite, slideUp 1s ease-out;
+            text-shadow: 0 0 50px var(--accent-cyan);
+        }
+
+        @keyframes heroGlow {
+            0%, 100% { filter: drop-shadow(0 0 20px var(--accent-cyan)); }
+            50% { filter: drop-shadow(0 0 30px var(--accent-purple)); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-subtitle {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--accent-green);
+            font-weight: 300;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+
+        .hero-description {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: slideUp 1s ease-out 0.6s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideUp 1s ease-out 0.9s both;
+        }
+
+        .btn {
+            padding: 1.5rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-intense);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-cyan);
+            color: var(--dark-gradient);
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        /* App Preview */
+        .app-preview {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 300px;
+            height: 600px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-intense);
+            animation: phoneFloat 6s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        @keyframes phoneFloat {
+            0%, 100% { transform: translateY(-50%) rotate(0deg); }
+            50% { transform: translateY(-60%) rotate(2deg); }
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-notch {
+            width: 150px;
+            height: 30px;
+            background: #000;
+            border-radius: 0 0 15px 15px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .app-interface {
+            padding: 40px 20px 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .ai-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: avatarPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes avatarPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: var(--card-gradient);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-intense);
+            border-color: var(--accent-cyan);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-cyan);
+        }
+
+        .feature-card p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Screenshots Section */
+        .screenshots {
+            padding: 8rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .screenshots-container {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding: 2rem 0;
+            scroll-snap-type: x mandatory;
+        }
+
+        .screenshot {
+            flex: 0 0 auto;
+            width: 300px;
+            height: 600px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-primary);
+            transition: all 0.3s ease;
+            scroll-snap-align: start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .screenshot:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-intense);
+        }
+
+        .screenshot-content {
+            padding: 30px 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .screenshot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .screenshot-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .screenshot-badge {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .screenshot-mockup {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .chat-message {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: 15px;
+            max-width: 85%;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background: var(--accent-gradient);
+            color: white;
+            margin-left: auto;
+        }
+
+        .ai-message {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            color: var(--accent-green);
+            font-size: 0.9rem;
+        }
+
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .switch {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            position: relative;
+        }
+
+        .switch::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Download Section */
+        .download {
+            padding: 8rem 0;
+            text-align: center;
+            background: var(--dark-gradient);
+            position: relative;
+        }
+
+        .download-card {
+            background: var(--card-gradient);
+            padding: 4rem;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-gradient);
+            opacity: 0.1;
+        }
+
+        .download-button {
+            background: var(--secondary-gradient);
+            color: var(--text-primary);
+            padding: 2rem 4rem;
+            font-size: 1.4rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-primary);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .download-button:hover::before {
+            left: 100%;
+        }
+
+        .download-button:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-intense);
+        }
+
+        .download-info {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+
+        .download-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: 'Orbitron', monospace;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Updates Section */
+        .updates {
+            padding: 8rem 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .updates-list {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .update-item {
+            background: var(--card-gradient);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent-green);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .update-item:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow-primary);
+            border-color: var(--accent-cyan);
+        }
+
+        .update-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .update-version {
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--accent-green);
+        }
+
+        .update-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .update-features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .update-features li {
+            padding: 0.5rem 0;
+            position: relative;
+            padding-left: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .update-features li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 8rem 0;
+            text-align: center;
+            background: var(--dark-gradient);
+        }
+
+        .contact-card {
+            background: var(--card-gradient);
+            padding: 4rem;
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-email {
+            font-size: 1.8rem;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            padding: 1.5rem 3rem;
+            border: 2px solid var(--accent-cyan);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(0, 212, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-email:hover {
+            background: var(--accent-cyan);
+            color: var(--dark-gradient);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-gradient);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links { 
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(12, 12, 12, 0.95);
+                flex-direction: column;
+                padding: 2rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero h1 { font-size: 3rem; }
+            .hero-subtitle { font-size: 1.5rem; }
+            .app-preview { display: none; }
+            .features-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 2.5rem; }
+            .screenshots-container { padding: 2rem; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+            .update-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .download-stats { flex-direction: column; }
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid var(--accent-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Scroll to top button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gradient);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-primary);
+        }
+
+        .scroll-to-top.show {
+            display: flex;
+        }
+
+        /* Modal for download */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: var(--card-gradient);
+            margin: 15% auto;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .close {
+            color: var(--text-secondary);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="animated-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <header>
+        <nav>
+            <div class="logo">MITRA</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#screenshots">Screenshots</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#updates">Updates</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
+        </nav>
+    </header>
+
+</nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>MITRA</h1>
+            <div class="hero-subtitle">Your Personal AI Assistant</div>
+            <div class="hero-description">
+                Experience the future of artificial intelligence with complete offline capabilities. 
+                Mitra runs entirely on your device - no internet required, complete privacy guaranteed.
+            </div>
+            <div class="cta-buttons">
+                <a href="#download" class="btn btn-primary">
+                    <span>📱</span> Download Now
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    <span>✨</span> Explore Features
+                </a>
+            </div>
+        </div>
+        <div class="app-preview">
+    <div class="phone-screen">
+        <div class="phone-notch"></div>
+        <div class="app-interface" style="padding: 0; margin: 0;">
+            <video autoplay muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;">
+                <source src="./assets/app.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+</div>
+
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Offline Intelligence</h3>
+                    <p>Complete AI capabilities without internet connection. Your data stays on your device, ensuring maximum privacy and security.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Optimized for mobile devices with instant responses. Experience AI conversations at the speed of thought.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Complete Privacy</h3>
+                    <p>Zero data collection, no cloud dependency. Your conversations and data remain completely private and secure.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Assistance</h3>
+                    <p>Get help with tasks, questions, and creative projects. Your AI assistant is always ready to help.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>Efficient Storage</h3>
+                    <p>Compact AI model that doesn't consume excessive storage space while delivering powerful capabilities.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Regular Updates</h3>
+                    <p>Continuous improvements and new features to enhance your AI experience with regular updates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="screenshots" id="screenshots">
+        <div class="container">
+            <h2 class="section-title">App Screenshots</h2>
+            <div class="screenshots-container">
+                <!-- <div class="screenshot">
+                    <div class="screenshot-content">
+                        <div class="screenshot-header">
+                            <div class="screenshot-title">Chat Interface</div>
+                            <div class="screenshot-badge">AI</div>
+                        </div>
+                        <div class="screenshot-mockup">
+                            <div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
+                                <div style="background: var(--accent-gradient); padding: 1rem; border-radius: 15px; color: white; align-self: flex-end; max-width: 80%; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                                    Hello Mitra! How are you?
+                                </div>
+                                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 15px; color: var(--text-primary); align-self: flex-start; max-width: 80%; border: 1px solid rgba(0,212,255,0.3);">
+                                    Hello! I'm doing great and ready to help you with anything you need. How can I assist you today?
+                                </div>
+                                <div style="background: var(--accent-gradient); padding: 1rem; border-radius: 15px; color: white; align-self: flex-end; max-width: 80%;">
+                                    Can you help me with coding?
+                                </div>
+                                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 15px; color: var(--text-primary); align-self: flex-start; max-width: 80%; border: 1px solid rgba(0,212,255,0.3);">
+                                    Absolutely! I can help you with various programming languages and concepts.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+
+                <div class="screenshot">
+                    <div class="screenshot-mockup" style="display: flex; justify-content: center; align-items: center;">
+                        <img src="./assets/1.jpg" alt="Chat Screenshot" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+
+                <div class="screenshot">
+                    <div class="screenshot-mockup" style="display: flex; justify-content: center; align-items: center;">
+                        <img src="./assets/2.jpg" alt="Chat Screenshot" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="screenshot">
+                    <div class="screenshot-mockup" style="display: flex; justify-content: center; align-items: center;">
+                        <img src="./assets/3.jpg" alt="Chat Screenshot" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                </div>
+                
+                <div class="screenshot">
+                    <div class="screenshot-content">
+                        <div class="screenshot-header">
+                            <div class="screenshot-title">Voice Chat</div>
+                            <div class="screenshot-badge">Voice(Soon)</div>
+                        </div>
+                        <div class="screenshot-mockup">
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem; padding: 1rem; align-items: center; text-align: center;">
+                                <div style="width: 80px; height: 80px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; animation: pulse 2s infinite; box-shadow: 0 0 20px rgba(0,212,255,0.5);">
+                                    🎤
+                                </div>
+                                <div style="color: var(--accent-cyan); font-size: 1.2rem; font-weight: bold;">
+                                    Listening...
+                                </div>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <div style="width: 4px; height: 20px; background: var(--accent-green); border-radius: 2px; animation: bounce 1s infinite;"></div>
+                                    <div style="width: 4px; height: 30px; background: var(--accent-cyan); border-radius: 2px; animation: bounce 1s infinite 0.1s;"></div>
+                                    <div style="width: 4px; height: 25px; background: var(--accent-purple); border-radius: 2px; animation: bounce 1s infinite 0.2s;"></div>
+                                    <div style="width: 4px; height: 35px; background: var(--accent-pink); border-radius: 2px; animation: bounce 1s infinite 0.3s;"></div>
+                                    <div style="width: 4px; height: 28px; background: var(--accent-green); border-radius: 2px; animation: bounce 1s infinite 0.4s;"></div>
+                                </div>
+                                <div style="color: var(--text-secondary); font-size: 0.9rem; max-width: 200px;">
+                                    Tap to stop recording or speak your question
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <section class="download" id="download">
+        <div class="container">
+            <div class="download-card">
+                <h2 class="section-title">Download Mitra AI</h2>
+                <p style="font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Get the most advanced offline AI assistant for your Android device. No internet required, complete privacy guaranteed.
+                </p>
+                <a href="#" class="download-button" onclick="downloadApp()">
+                    <span style="font-size: 1.5rem;">📱</span>
+                    Download APK
+                </a>
+                <div class="download-info">
+                    <p><strong>Latest Version:</strong> v1.0.1 | <strong>Size:</strong> 923 MB | <strong>Android:</strong> 8.0+</p>
+                    <p style="margin-top: 1rem; font-size: 1rem;">
+                        <span style="color: var(--accent-green);">✓</span> Completely Free
+                        <span style="margin: 0 1rem;">•</span>
+                        <span style="color: var(--accent-green);">✓</span> No Ads
+                        <span style="margin: 0 1rem;">•</span>
+                        <span style="color: var(--accent-green);">✓</span> Open Source
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="updates" id="updates">
+        <div class="container">
+            <h2 class="section-title">Latest Updates</h2>
+            <div class="updates-list">
+                <div class="update-item">
+                    <div class="update-header">
+                        <div class="update-version">v1.0.1</div>
+                        <div class="update-date">July 09, 2025</div>
+                    </div>
+                    <ul class="update-features">
+                        <li>⚡ Improved response speed by 40% through model optimization</li>
+                        <li>🔧 Enhanced stability and reduced memory usage</li>
+                        <li>🎨 New dark theme with customizable accent colors</li>
+                        <li>📱 Better tablet support with adaptive UI</li>
+                    </ul>
+                </div>
+                <div class="update-item">
+                    <div class="update-header">
+                        <div class="update-version">v1.0.2</div>
+                        <div class="update-date"> End of 2025</div>
+                    </div>
+                    <ul class="update-features">
+                        <li>🎤 Added voice chat functionality with real-time speech recognition</li>
+                        <li>🐛 Fixed conversation history sync issues</li>
+                        <li>📝 Improved text formatting and code syntax highlighting</li>
+                        <li>Adding into PlayStore Soon</li>
+                        <li><h3>🔄 And Many more Stay Tuned</h3></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-card">
+                <h2 class="section-title">Get in Touch</h2>
+                <p style="font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 3rem;">
+                    Have questions, suggestions, or need support? We'd love to hear from you!
+                </p>
+                <a href="mailto:soloaidev@gmail.com" class="contact-email">
+                    <span>📧</span>
+                    soloaidev@gmail.com
+                </a>
+                <div style="margin-top: 2rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="color: var(--accent-green); font-size: 2rem; margin-bottom: 0.5rem;">🚀</div>
+                        <div style="color: var(--text-secondary);">Feature Requests</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: var(--accent-cyan); font-size: 2rem; margin-bottom: 0.5rem;">🛠️</div>
+                        <div style="color: var(--text-secondary);">Technical Support</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: var(--accent-purple); font-size: 2rem; margin-bottom: 0.5rem;">🤝</div>
+                        <div style="color: var(--text-secondary);">Partnerships</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Mitra AI. All rights reserved. | Made with ❤️ for privacy-conscious users</p>
+                <p style="margin-top: 1rem; font-size: 0.8rem;">
+                    Mitra AI is an open-source project dedicated to bringing advanced AI capabilities to everyone while respecting privacy and security.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Loading animation
+        window.addEventListener('load', function() {
+            const loading = document.getElementById('loading');
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 500);
+        });
+
+        // Create floating particles
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                
+                // Random colors
+                const colors = ['var(--accent-cyan)', 'var(--accent-purple)', 'var(--accent-pink)', 'var(--accent-green)'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particles.appendChild(particle);
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(12, 12, 12, 0.95)';
+            } else {
+                header.style.background = 'rgba(12, 12, 12, 0.9)';
+            }
+        });
+
+        // Download function
+        function downloadApp() {
+            // Create a temporary element to trigger download
+            const link = document.createElement('a');
+            link.href = 'https://drive.google.com/file/d/1RU4vs8jTP_EBS4qWXl-wGwoOYnUysa7C/view?usp=sharing'; // Replace with actual APK download link
+            link.download = 'https://drive.google.com/file/d/1RU4vs8jTP_EBS4qWXl-wGwoOYnUysa7C/view?usp=sharing';
+            
+            // Show download modal/notification
+            showDownloadModal();
+            
+            // In a real implementation, you would provide the actual APK file
+            link.click();
+        }
+
+        // Show download modal
+        function showDownloadModal() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+                backdrop-filter: blur(10px);
+            `;
+            // Close on outside click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Add CSS animations for bounce effect
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-10px);
+                }
+                60% {
+                    transform: translateY(-5px);
+                }
+            }
+            
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    box-shadow: 0 0 20px rgba(0,212,255,0.5);
+                }
+                50% {
+                    transform: scale(1.05);
+                    box-shadow: 0 0 30px rgba(0,212,255,0.8);
+                }
+                100% {
+                    transform: scale(1);
+                    box-shadow: 0 0 20px rgba(0,212,255,0.5);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize particles
+        createParticles();
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(50px)';
+            section.style.transition = 'all 0.8s ease';
+            observer.observe(section);
+        });
+
+        // Make hero section visible immediately
+        document.querySelector('.hero').style.opacity = '1';
+        document.querySelector('.hero').style.transform = 'translateY(0)';
+    </script>
+</body>
+</html>
