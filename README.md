@@ -10,7 +10,7 @@
 [![Version](https://img.shields.io/badge/Version-v1.0.1-blue.svg)](#)
 [![License](https://img.shields.io/badge/License-Open%20Source-orange.svg)](#)
 
-[📥 Download APK]([https://github.com/yourusername/mitra-ai/releases](https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html)) • [🎯 Features](#features) • [📱 Screenshots](#screenshots) • [🔧 Installation](#installation)
+[📥 Download APK](https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html) • [🎯 Features](#features) • [📱 Screenshots](#screenshots) • [🔧 Installation](#installation)
 
 </div>
 
@@ -68,7 +68,7 @@ Mitra AI is a revolutionary offline AI assistant that runs entirely on your Andr
    ```
    Latest Version: v1.0.1
    File Size: 923 MB
-   Download: [Mitra AI APK]([https://github.com/yourusername/mitra-ai/releases/latest](https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html))
+   Download: [Mitra AI APK]([https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html](https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html))
    ```
 
 2. **Enable Unknown Sources**
