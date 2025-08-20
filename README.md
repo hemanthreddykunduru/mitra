@@ -68,7 +68,7 @@ Mitra AI is a revolutionary offline AI assistant that runs entirely on your Andr
    ```
    Latest Version: v1.0.1
    File Size: 923 MB
-   Download: [Mitra AI APK]([https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html](https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html))
+   Download: [Mitra AI APK]([https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html])
    ```
 
 2. **Enable Unknown Sources**
@@ -153,7 +153,7 @@ We welcome contributions from the community! Here's how you can help:
 ### Development Setup
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mitra-ai.git
+git clone [https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html]
 
 # Open in Android Studio
 # Build and run on device or emulator
@@ -166,8 +166,8 @@ This project is open source. See [LICENSE](LICENSE) file for details.
 ## 📞 Contact & Support
 
 - **Email**: soloaidev@gmail.com
-- **Issues**: [GitHub Issues](https://github.com/yourusername/mitra-ai/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/mitra-ai/discussions)
+- **Issues**: [GitHub Issues](https://github.com/hemanthreddykunduru/mitra-Personal.Offline.AI.Assistant/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/hemanthreddykunduru/mitra-Personal.Offline.AI.Assistant/discussions)
 
 ## 🙏 Acknowledgments
 
@@ -179,10 +179,10 @@ This project is open source. See [LICENSE](LICENSE) file for details.
 
 <div align="center">
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/mitra-ai?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/mitra-ai?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/mitra-ai)
-![GitHub last commit](https://img.shields.io/github/last-commit/yourusername/mitra-ai)
+![GitHub stars](https://img.shields.io/github/stars/hemanthreddykunduru/mitra-ai?style=social)
+![GitHub forks](https://img.shields.io/github/forks/hemanthreddykunduru/mitra-ai?style=social)
+![GitHub issues](https://img.shields.io/github/issues/hemanthreddykunduru/mitra-ai)
+![GitHub last commit](https://img.shields.io/github/last-commit/hemanthreddykunduru/mitra-ai)
 
 </div>
 
