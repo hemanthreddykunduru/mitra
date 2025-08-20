@@ -2,7 +2,6 @@
 
 <div align="center">
 
-![Mitra AI Logo](https://via.placeholder.com/200x200/2563eb/ffffff?text=Mitra+AI)
 
 **Experience the future of AI—offline, fast, private. 100% device-based.**
 
@@ -11,7 +10,7 @@
 [![Version](https://img.shields.io/badge/Version-v1.0.1-blue.svg)](#)
 [![License](https://img.shields.io/badge/License-Open%20Source-orange.svg)](#)
 
-[📥 Download APK](https://github.com/yourusername/mitra-ai/releases) • [🎯 Features](#features) • [📱 Screenshots](#screenshots) • [🔧 Installation](#installation)
+[📥 Download APK]([https://github.com/yourusername/mitra-ai/releases](https://hemanthreddykunduru.github.io/mitra-Personal.Offline.AI.Assistant/index.html)) • [🎯 Features](#features) • [📱 Screenshots](#screenshots) • [🔧 Installation](#installation)
 
 </div>
 
@@ -54,14 +53,6 @@ Mitra AI is a revolutionary offline AI assistant that runs entirely on your Andr
 - 🤖 Advanced virtual assistant features
 
 ## 📱 Screenshots
-
-<div align="center">
-
-| Main Interface | 3D Agent | Dark Mode |
-|:--------------:|:--------:|:---------:|
-| ![Main]([https://via.placeholder.com/250x500/f3f4f6/374151?text=Chat+Interface](https://hemanthreddykunduru.github.io/mitra/assets/2.jpg)) | ![Agent](https://via.placeholder.com/250x500/ddd6fe/7c3aed?text=3D+Agent) | ![Dark](https://via.placeholder.com/250x500/1f2937/f9fafb?text=Dark+Mode) |
-
-</div>
 
 ## 🔧 Installation
 
